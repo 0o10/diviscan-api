@@ -205,30 +205,6 @@ module.exports = (app) => {
         })
     })
 
-    app.get('/masternode/:address', (req, res) => {
-        let address = req.params.address
-        batchCall = () => {
-            rpc.listMasternodes()
-        }
-
-        rpc.batch(batchCall, (err, mns) => {
-            if (err) throw err
-
-            const masternodes = mns[0].result
-
-            // Find specific masternode
-            const masternode = masternodes.find(masternode => masternode.addr === address)
-
-            // Not found?
-            if (!masternode) {
-                return res.json("Sorry that address does not exist")
-            }
-
-            // Send reply
-            return res.json(masternode)
-        })
-    })
-
     // Return only rewards by masternodes
     app.get('/masternode-rewards', (req, res) => {
         let rewardArr = []
